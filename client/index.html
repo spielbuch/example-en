@@ -1,0 +1,116 @@
+<head>
+    <title>Spielebuch - a meteor package to create interactive stories</title>
+</head>
+
+<body>
+{{> index}}
+</body>
+
+<template name="index">
+    <div class="container main">
+        {{>header}}
+        <div class="row">
+            <div class="col-md-12">
+                {{>readerText}}
+                {{>readerInteraction}}
+                {{>readerCountdown}}
+            </div>
+            <hr/>
+            <div class="col-md-12">
+                Power: {{readerPlayerDamage}} | Hitpoints: {{readerPlayerHitpoints}} | Armor: {{readerPlayerDefense}}
+            </div>
+            <hr/>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {{>readerLog}}
+            </div>
+        </div>
+        </div>
+    {{>footer}}
+</template>
+
+<template name="header">
+    <div id="navbar" class="navbar-collapse collapse">
+        {{>loginButtons}}
+        <ul class="nav navbar-nav navbar-right">
+            <li><a class="restart-story" href="#">New story</a></li>
+            <li><a href="https://github.com/spielebuch/example-en" target="_blank">GitHub</a></li>
+        </ul>
+
+    </div>
+</template>
+
+<template name="footer">
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-small">
+                    <!-- If you use this app delete this or replace it with your own data. -->
+                    <h4>Impressum (german law demands it):</h4>
+                    <address><strong>Daniel Budick, B.Eng.</strong><br>Speyerer Straße 1<br>90443 Nürnberg</address>
+                    <p>Telefon: +49 (0)911 - 980 328 49 / E-Mail: spielebuch@budick.eu</p>
+                </div>
+                <div class="col-md-6">
+                    <!--
+                        This should be in every app on a prominent place to be conform with the Affero GPL.
+                        Spielebuch is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License.
+                        But please repect the license at all time.
+                        Thx ;)
+                     -->
+                    {{{readerCopyrightNotice}}}
+                </div>
+            </div>
+        </div>
+    </footer>
+</template>
+
+<template name="loading">
+    <style>.spinner {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        margin: 100px auto;
+    }
+    .double-bounce1, .double-bounce2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #333;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+        animation: sk-bounce 2.0s infinite ease-in-out;
+    }
+    .double-bounce2 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+    }
+    @-webkit-keyframes sk-bounce {
+        0%, 100% {
+            -webkit-transform: scale(0.0)
+        }
+        50% {
+            -webkit-transform: scale(1.0)
+        }
+    }
+    @keyframes sk-bounce {
+        0%, 100% {
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        }
+        50% {
+            transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+        }
+    }</style>
+    <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</template>
