@@ -73,14 +73,14 @@ createSceneThree = function (story, player) {
     /**
      * We create the ax.
      */
-    var axe = scene.addText(`Daran lehnte eine [Axt](axe).`);
+    var axe = scene.addText(`There is an [Axe](axe).`);
     /**
      * Now we have to prepare the axe.
      * The player should be able to take the ax.
      *
      * Piece of cake...
      */
-    axe.setEvent('Nehmen', function () {
+    axe.setEvent('Take', function () {
         self.take();
     }, 'ion-android-hand');
 
@@ -94,12 +94,12 @@ createSceneThree = function (story, player) {
      * And the axe needs the 'Money for wood'-property.
      * So we add an effect with a 'Money for wood'-rule, that was defined in /lib/rules.js and a new created rule to increase the damage of the player.
      */
-    axe.addEffect(new Spielebuch.Effect('Axt', [Rules.woodMoney, new Spielebuch.Rule(Spielebuch.Gameplay.damage, '+5')]));
+    axe.addEffect(new Spielebuch.Effect('Axe', [Rules.woodMoney, new Spielebuch.Rule(Spielebuch.Gameplay.damage, '+5')]));
 
     /**
      * The woodstack should not be destroyed with the first hit, so he gets a little more hitpoints.
      */
-    woodstack.addEffect(new Spielebuch.Effect('Holzstapel', Rules.wooden));
+    woodstack.addEffect(new Spielebuch.Effect('Woodstack', Rules.wooden));
 
 
     /**
@@ -113,10 +113,10 @@ createSceneThree = function (story, player) {
     /**
      * At last we add some events to the house and the street to open up the whole world to the player
      */
-    street.setEvent('Laufen',function(){
+    street.setEvent('Walk',function(){
         story.next(fourthScene);
     },'fa-long-arrow-right');
-    bakery.setEvent('Laufen',function(){
+    bakery.setEvent('Walk',function(){
         story.next(fourthScene);
     },'fa-long-arrow-right');
 };

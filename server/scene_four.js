@@ -20,7 +20,7 @@ createSceneFour = function(story,player){
     /**
      * We can make every word/letter/sentence into a gameobject. We give the object back the event walk, that let's the player walk back to the thirdScene
      */
-     back.setEvent('Laufen',function(){
+     back.setEvent('Walk',function(){
          Spielebuch.stopCountdown(Session.get('countdownIdSceneFour'));
         story.next(thirdScene);
     },'fa-long-arrow-right');
