@@ -9,10 +9,9 @@ createSceneThree = function (story, player) {
      * Add some google translated text (yeah I will fix this... soonish...)...
      */
     scene.addText(`
-        My legs were soft and shaky and my skull boomed .
-        Powerless I leaned against the wall next to me and began , though still a little veiled ,
-        perceive my surroundings .
-        I was in a side street in the shadow of a superstructure .
+        My legs were soft and shaky and my skull boomed.
+        Powerless I leaned against the wall next to me and began to scan the area.
+        I was in a side street in the shadow of a canopy.
     `);
 
 

@@ -3,7 +3,7 @@
  * I use to the first chapter of the fantasy novel Mundhir - Interregnum,
  * at courtesy of the author (all rights remain with the author).
  *
- * It is a german novel and I am lazy so I used google translate... still better than twilight ;)
+ * It is a german novel and I did my best to translate... still a better love story than twilight ;)
  *
  * For your support I leave this amazon ref-link here... ;)
  * http://www.amazon.de/gp/product/1499307675/ref=as_li_tl?ie=UTF8&camp=1638&creative=19454&creativeASIN=1499307675&linkCode=as2&tag=budickeu-21
@@ -53,19 +53,16 @@ createStory = function (userId) {
      * Let's write, I mean copy&pasten a short prolog ;)
      */
     sceneOne.addText(`
-        When I hit the ground , I turned my head still instinctively aside. This
-        Heroism of my brain , I owed ​​it to my nose before the enormous force
-        was protected , which now hit the side of my head . I had once read that when
-        the interaction between two bodies at the same time every action an equal
-        Generates reaction which reacts on the cause of action
-        Strangely, I did exactly that at this moment through your mind . and yet
-        while the ground , put me in momentum ausdrehte , I imagined a
-        Laughter heard.
-        Propped both hands I wanted to push it upwards . But the fear of
-        either side , or even fall away to heaven , held me back .
+        When I hit the ground, I turned my head instinctively aside. This
+        heroism of my brain, saved my nose from the enormous force
+        that now hit the side of my head. I had once read that while
+        the interaction between two bodies every action creates an equal
+        reaction.
+        Strangely this was exactly what went through my my mind while I waited for the world to stop spinning.
+        I imagined hearing a laughter. I prepared both hands to push upwards and stand up. But the fear of falling from the earth, held me back.
     `);
     /**
-     * Yes this is translated by google... I will fix it... soon.
+     * Yes, my english sucks... still better than google translate tho...
      */
 
     /**
@@ -76,10 +73,9 @@ createStory = function (userId) {
      * In the next text, the word head will be made to a GameObject by using markdown. It will be the return-value of the addText()-method.
      */
     var head = sceneOne.addText(`
-        I heard someone beside me lightly on the ground came up and tried to
-        [Head](head) to lift and looking up. It muttered , it seemed to me as if my brain me at every
-        Page wanted to escape from the skull. Probably to a place to look for, to
-        which it was able to go about his business in peace .
+        Someone landed lightly on the ground next to me. I tried to lift my
+        [Head](head) to look up. It seemed like my brain wanted to escape from my skull.
+        Probably to find a quiet place where it was able to go about its business in peace.
     `);
     /**
      * We put the word, that will be a GameObject into brackets [] and define the key 'head' in round brackets.
@@ -134,19 +130,16 @@ createStory = function (userId) {
      */
 
     /**
-     * This scene required text:
+     * The player did it... he/she looked up. Now we describe the next scene.
      */
     var helpingHand = sceneTwo.addText(`
-        It finally I managed to raise my head and I saw Aiden . black
-        Hair , a somewhat broad nose and a cheeky grin .
-        His first words to me were something about that he did not have me come
-        . see He gave me the look of a sober drunkard who in the
-        Sufficiency sunning , once not drunk to lie on the ground and it is tuned and
-        this fact morally and dramatically cannibalize . He had his mouth already
-        open , as he shook hands with me . The words had laid his brain and to the
-        Sent tongue , she wanted these forms when he aufhalf me .
-        But his mocking look more honest concern , when he had approached me and
-        could smell no flag. Aiden is keeping me his [hand](helping_hand) out .
+        Finally I managed to raise my head and I saw Aiden. Black
+        Hair, a somewhat broad nose and a cheeky grin.
+        His first words to me were something about that he did not had seen me coming...
+        He gave me the contempt look of a sober drunkard that felt the superiority
+        that comes with not laying wasted on the ground. He was about to say something,
+        but his mocking look on his face changed to concern, when he realized the missing smell of booz.
+        Aiden offers you his [hand](helping_hand) to help you up.
     `);
     /**
      * Aiden offers a helping hand to help the player stand up.
@@ -195,8 +188,7 @@ createStory = function (userId) {
      * Let's write a little more text to fill the cutscene...
      */
     cutSceneOne.addText(`
-        While the the sour stench that was caused by puddle slowly reached my nose,
-        I finally made ​​the decision to take Aiden's hand and he pulled me up.
+        I finally made ​​the decision to take Aiden's hand and he pulles me up.
     `);
 
     /**
