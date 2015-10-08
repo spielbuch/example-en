@@ -1,9 +1,26 @@
+@import url(https://fonts.googleapis.com/css?family=Slabo+27px);
+body{
+
+}
+
 .overflow-scroll{
+    min-height: 20vh;
     height: 20vh;
     overflow: hidden;
+    cursor: pointer;
 }
+.overflow-scroll:active{
+    height: auto;
+}
+
 .main{
     height:60vh;
+}
+.reader-text{
+    font-family: 'Slabo 27px', serif;
+    font-size: 1.5em;
+    min-height: 25vh;
+    font-size: 1.8em;
 }
 
 footer{
@@ -13,4 +30,9 @@ footer{
     background-color: #222;
     border-color: #080808;
     color: #9d9d9d;
+}
+
+.reader-text a{
+    color: #080808!important;
+    font-weight: bold;
 }

@@ -2,13 +2,13 @@ createSceneFour = function(story,player){
     var scene = story.addScene();
     story.publish('fourthScene', scene.index);
     var back = scene.addText(`
-        Hier gibt es nichts zu sehen. Gehe [zurück](back).
+        Nothing to see here... yet. Go [back](back).
     `);
 
 
     /**
-     * Hier gibt es noch nichts interressantes, deswegen geht es direkt wieder zurück...
-     * Nach einem Countdown natürlich.
+     * Nothing to see here... the player should go back.
+     * If he/she does not, he will be transportet back after the countdown.
      */
     scene.onVisit(function(){
         var countdownId = Spielebuch.startUiCountdown(10000, 1000, function () {
@@ -16,12 +16,9 @@ createSceneFour = function(story,player){
         });
         Session.set('countdownIdSceneFour',countdownId);
     });
+
     /**
-     * Der Spieler soll die Möglichkeit haben, durch das Objekt 'zurück' zurückgehen zu können. Dazu muss aber der Countdown beendet werden,
-     * da dieser sonst in der falschen Szene weiterlaufen und feuern würde.
-     * Um einen Countdown zu beenden müssen wir aber dessen Id wissen.
-     *
-     * Wir verwenden dazu eine Session variable und beenden den Countdown mit Spielebuch.stopCountdown().
+     * We can make every word/letter/sentence into a gameobject. We give the object back the event walk, that let's the player walk back to the thirdScene
      */
      back.setEvent('Laufen',function(){
          Spielebuch.stopCountdown(Session.get('countdownIdSceneFour'));

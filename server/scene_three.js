@@ -1,95 +1,117 @@
 createSceneThree = function (story, player) {
     /**
-     * Auch hier, wie gehabt:
-     * Szene erstellen, index für den Client veröffentlichen.
-     * Und wir können die Variable scene nutzen, das wir keinen mit Scenen verschmutzten Scope mehr haben.
+     * Same procedure: Create a scene, publish its index to the client.
      */
     var scene = story.addScene();
     story.publish('thirdScene', scene.index);
 
+    /**
+     * Add some google translated text (yeah I will fix this... soonish...)...
+     */
     scene.addText(`
-        Meine Beine waren weich und zittrig und mein Schädel dröhnte.
-        Kraftlos lehnte ich mich an die Wand neben mir und begann, wenn auch noch ein wenig verschleiert,
-        meine Umgebung wahrzunehmen.
-        Ich befand mich in einer Seitengasse im Schatten eines Überbaus.
+        My legs were soft and shaky and my skull boomed .
+        Powerless I leaned against the wall next to me and began , though still a little veiled ,
+        perceive my surroundings .
+        I was in a side street in the shadow of a superstructure .
     `);
 
 
+    /**
+     * No we need a bunch of GameObjects.
+     */
     var bakery = scene.addText(`
-        Dieser befand sich neben einem [Haus](house_bakery), von dem ich später erfuhr, dass es eine Bäckerei war.
+        This was next to a [house](house_bakery), I later learned that it was a bakery.
     `);
     /**
-     * Die Bäckerei kann eine zusätzliche Szene darstellen, im Moment wollen wir uns aber auf die Axt und den Holzstapel
-     * konzentrieren.
+     * the bakery can be the way to an additional scene, but let's focus on the wood and the axe first.
      *
-     * Ziel soll sein, durch Holzhacken Geld zu verdienen.
-     * Dazu muss der Spieler zuerst die Axt aufnehmen. Mit jedem Schlag verdient er eine Goldmünze.
+     * Requirement: The player should be able to make money by chopping wood.
+     * To accomplish that the player should take the axe and equip it.
+     * If he/she does not use the axe and chops wood with its hand, the woodstack would be destroyed, the player would have earned nothing and would be embarrassed.
      *
-     * Wenn der Stapel zerstört wurde, soll dort weiterhin Text stehen. Es können beliebig viele Sätze übereinander gestapelt werden.
+     * If the woodstack is destroyed the text should change.
+     * Scene.addText() can take multiple sentences as parameter. If the Gameobject inside a sentence is destroyed or taken, the surounding text is deleted:
+     * 'This is an [object](objectKey).'
+     * object.destroy();
+     * -nothing-
+     *
+     * If we stack it on a second sentence
+     * 'This is an [object](objectKey).','The object has been destroyed'
+     * object.destroy();
+     * 'The object has been destroyed'
+     *
+     *
      */
-    var woodblock = scene.addText(`Rechts neben mir war [Holz](wood_block) gestapelt, davor stand ein Block.`, `Das Holz ist fertig gehackt.`);
+    var woodstack = scene.addText(`Right beside me [Wood](wood_block) was stacked.`, `Right beside me the chopped wood.`);
     /**
      * Beim Holzhacken möchten wir testen, ob der Spieler die Axt aufgenommen hat.
      * Dazu haben wir die Regel Rules.woodMoney erstellt, die wir der Axt geben.
      * Für jeden Schlag wird dem Property 'Holz zu Geld' entsprechende Summe dem Spieler als Geld gutgeschrieben.
      *
-     * Mit Spielebuch.printd() teilen wir dem Spieler noch den verdienten Betrag mit.
-     * Außerdem wollen wir dem Holzstapel auch Schaden zufügen, da er irgendwann verschwinden soll.
+     * With Spielebuch.printd() we show the player the money he/she made with every hit.
+     * And we want to add damage to the woodstack. For this we use player.attack() on self (self is woodstack, because it is in an event-function of woodstack).
      *
-     * Wir verwenden deshalb die attack Methode des Spielers player.attack();
-     * Es wird ein Schaden anhand der Angriffswerte des Spielers und der Defensiv werte des Opfers (in diesem Fall der Holzstapel)
-     * ermittelt und von der Gesundheit des Opfers abgezogen. Da Actio=Reactio wird sofort ein Angriff vom Opfer auf den Spieler gestartet.
-     * Da der Holzstapel keine Angriffswerte hat, ist der Gegenangriff wirkungslos.
+     * The damage is calculated with the damage value of the attacker and the defense value of the defender. The result is multiplicated with a random number between 0.5 and 2.0 (2.0 is critical damage).
+     * Actio = reactio, so the defender strikes back and attacks the attacker automaticly. But the woodstack has an damage value of 0 so nothing happens, good for the player.
      */
-    woodblock.setEvent('Holz hacken', function () {
-        var money = player.getValueByName('Geld');
-        money += player.getEquippedValueByName('Holz zu Geld');
-        Spielebuch.printd(`Du hast soeben ${player.getEquippedValueByName('Holz zu Geld')} Geld verdient.`);
-        player.addEffect(new Spielebuch.Effect('Geld', new Spielebuch.Rule('Geld', money)));
+    woodstack.setEvent('Chop wood', function () {
+        var money = player.getValueByName('Money');
+        money += player.getEquippedValueByName('Money for wood');
+        Spielebuch.printd(`You just earned ${player.getEquippedValueByName('Money for wood')} Money.`);
+        player.addEffect(new Spielebuch.Effect('Money', new Spielebuch.Rule('Money', money)));
         player.attack(self);
     }, 'fa-crosshairs');
     /**
-     * Was macht diese Funktion:
-     * - es wird die Summe des Geldes des Spielers mit player.getValueByName('Geld') ermittelt und in der Variable money gespeichert
-     * - es wird die Ausrüstung des Spielers geprüft, wieviel 'Holz zu Geld'-Wert sie hat.
-     * - Die Summe wird dem spieler als Absoluter Effekt gutgeschrieben.
-     * Man könnte natürlich auch immer relativ hochzählen ('+x' Geld), aber das ist geschmackssache.
+     * What did this function do, to get the money value?
+     * - it took the money of the player with player.getValueByName('Money') and stored it into the variable money
+     * - the equipment of the player is checked for its 'Money for wood'-value. If he/she has not equipped the axe yet, he/she damages the woodstack but earns no money.
+     * - The sum of the money is stored on the player as absolute value.
+     *
+     * It would be possible to use manipulator in this case ('+x' Money for every hit).
      */
 
     /**
-     * Damit der Spieler Geld verdienen kann, kümmern wir uns als nächstes um die Axt:
-     * Der Spieler muss die Axt nicht nur nehmen können (das erledigen wir indem wir in einerm Event self.take() aufrufen).
-     * Er muss sie anschließend auch ausrüsten können.
-     * Um ein Ausrüsten zu ermöglichen, müssen wir festlegen, an welchem Körperteil die Axt verwendet werden kann. Wir wählen die rechte Hand (handRight).
-     *
-     * Als nächses bekommt die Axt einen Effekt. Dieser hat zwei Regeln, einemal die in /lib/rules.js festgelegte um Geld zu verdienen, die Zweite wird direkt festgelegt,
-     * damit die Axt Schaden wirkt und der Holzstapel irgendwann kaputt ist.
+     * We create the ax.
      */
     var axe = scene.addText(`Daran lehnte eine [Axt](axe).`);
-    axe.setEquipRules('handRight');
-    axe.addEffect(new Spielebuch.Effect('Axt', [Rules.woodMoney, new Spielebuch.Rule(Spielebuch.Gameplay.damage, '+5')]));
-
     /**
-     * Damit der Holzstapel nicht sofort zerstört wird, bekommt er noch ein wenig Gesundheit:
-     */
-    woodblock.addEffect(new Spielebuch.Effect('Holzstapel', Rules.wooden));
-
-    /**
-     * Jetzt sollte man die Axt noch aufnehmen können, sonst bringt das ja alles nicht ;)
+     * Now we have to prepare the axe.
+     * The player should be able to take the ax.
+     *
+     * Piece of cake...
      */
     axe.setEvent('Nehmen', function () {
         self.take();
     }, 'ion-android-hand');
 
-    var street = scene.addText(`Links von mir war eine [Straße](street),
-    auf die die Mittagshitze herab brannte und das eine oder andere Fuhrwerk vorbei ratterte.`);
+    /**
+     * The player should be able to equip the ax, but not on every body part.
+     * So we define an eqipRule
+     */
+    axe.setEquipRules('handRight');
 
+    /**
+     * And the axe needs the 'Money for wood'-property.
+     * So we add an effect with a 'Money for wood'-rule, that was defined in /lib/rules.js and a new created rule to increase the damage of the player.
+     */
+    axe.addEffect(new Spielebuch.Effect('Axt', [Rules.woodMoney, new Spielebuch.Rule(Spielebuch.Gameplay.damage, '+5')]));
 
-
+    /**
+     * The woodstack should not be destroyed with the first hit, so he gets a little more hitpoints.
+     */
+    woodstack.addEffect(new Spielebuch.Effect('Holzstapel', Rules.wooden));
 
 
     /**
-     * Zuletzt lassen wir noch die Straße und die Bächkerei zur vierten Szene weiterleiten, diese ist allerdings eine Sackgasse, von der der Spieler nur zu jetztigen Szene zurückkehren kann.
+     * For good measure we add a street to give the player two directions to go.
+     * It's all about freedom in this game.
+     */
+    var street = scene.addText(`To my left was a [road](street)
+    where the one or the other wagon rattled past.`);
+
+
+    /**
+     * At last we add some events to the house and the street to open up the whole world to the player
      */
     street.setEvent('Laufen',function(){
         story.next(fourthScene);
@@ -97,6 +119,4 @@ createSceneThree = function (story, player) {
     bakery.setEvent('Laufen',function(){
         story.next(fourthScene);
     },'fa-long-arrow-right');
-
-
 };

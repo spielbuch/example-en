@@ -2,6 +2,9 @@
  * Let's go , let's create an interactive story .
  * I use to the first chapter of the fantasy novel Mundhir - Interregnum,
  * at courtesy of the author (all rights remain with the author).
+ *
+ * It is a german novel and I am lazy so I used google translate... still better than twilight ;)
+ *
  * For your support I leave this amazon ref-link here... ;)
  * http://www.amazon.de/gp/product/1499307675/ref=as_li_tl?ie=UTF8&camp=1638&creative=19454&creativeASIN=1499307675&linkCode=as2&tag=budickeu-21
  * http://www.amazon.com/gp/product/1499307675
@@ -152,10 +155,10 @@ createStory = function (userId) {
      *
      * The standing up part will be in a short cut scene.
      *
-     * Important: we use an icon from ionicons for this event.
+     * Important: we use an icon from ionicons for this event. Yeah, we can do this.
+     *
      */
-    helpingHand.setEvent('Take',
-    function(){
+    helpingHand.setEvent('Take', function(){
         story.next(cutSceneHelpingHand);
     }, 'ion-android-hand');
 
@@ -166,45 +169,50 @@ createStory = function (userId) {
     var cutSceneOne = story.addScene();
     story.publish('cutSceneHelpingHand', cutSceneOne.index);
     /**
-     * Wir benutzen dafür die das onVisit Event der Szene.
-     * Dieses Event wird immer ausgeführt, wenn die Szene startet
-     * Wir schreiben eine kurze Meldung in das Log (Spielebuch.printd())
-     * und starten anschließend einen Countdown
-     * - der erste Parameter ist die Dauer in Millisekunden
-     * - die zweite ist der Intervall in dem heruntergezählt wird in Millisekunden
-     * - die anonyme Funktion am Ende wird ausgeführt wenn der Countdown zuende ist.
-     * Da die anonyme Funktion im selben Scope liegt, wie das Callback von onVisit,
-     * hat sie Zugriff auf die Variablen die mit publish veröffentlich wurden und
-     * auf story, scene, player und self, wobei self hier undefined ist, da es sich nicht um ein Event eines GameObject handelt.
+     * The countdown should start with the cutscene.
+     * For this we set an onVisit-event. There is a onFirstVisit-event too, but this would only fire on the first visit.     *
+     *
+     * In the event-function we write a short message to the log (Spielebuch.printd()) and start an UI-Countdown.
+     *
+     * There are two different kinds of countdown:
+     * - startSilentCountdown: Is executed in the background. There can be multiple countdowns at the same time.
+     * - startUiCountdown: A timer is shown in the ui. At the moment we can have only one timer at the same time, so a new ui-countdown destroyes the old one and takes its place.
+     * Both functions have the same parameter
+     * - first parameter is the duration in milliseconds
+     * - second parameter is the interval in which it counts down in milliseconds
+     * - third parameter is a function. This function will be executed when the countdown is finished.
+     *   Because we use startUiCountdown in an event-function it shares all the variables of an event function (story, scene, player...)
+     *
+     *  But be careful: onVisit has an event-function of a scene. Not of a GameObject, we do not have self as variable.
      */
     cutSceneOne.onVisit(function(){
-        Spielebuch.printd('Aiden hilft dir auf die Beine...');
+        Spielebuch.printd('Aiden helps you up...');
         Spielebuch.startUiCountdown(3000, 1000, function () {
             story.next(thirdScene);
         });
     });
     /**
-     * Wir schreiben noch ein wenig Text...
+     * Let's write a little more text to fill the cutscene...
      */
     cutSceneOne.addText(`
-        Während der säuerliche Gestank, der von mir verursachten Pfütze langsam auf und mir in
-        die Nase stieg, fasste ich schließlich den Entschluss, Aidens Hand zu nehmen und mich
-        an ihr auf die Beine zu ziehen.
+        While the the sour stench that was caused by puddle slowly reached my nose,
+        I finally made ​​the decision to take Aiden's hand and he pulled me up.
     `);
 
     /**
-     * Danach wird zur dritten Szene gewechselt, diese erstelle wir jetzt... wobei...
-     * ist schon ein wenig viel Code für eine Datei... lagern wir aus.
+     * When the countdown finishes, the story changes to the third scene.
+     * We create it now... but not here.
+     * There is a lot of code for one file...
      *
-     * Wir sehen uns in /server/scene_four.js
-     * Dort definieren wir die globale Funktion createScneFour und rufen sie hier mit den parametern story und player auf (denn die brauchen wir noch).
+     * See you in /server/scene_three.js
+     * There we will create the global function createSceneFour that we call with the parameter story und player.
      *
-     * Somit können auch mehrere Autoren an einem Projekt arbeiten... cool, oder.
+     * Thus multiple authors can work on one story!
      */
     createSceneThree(story, player);
     /**
-     * alle weiteren Szenen werden wir auf diese Art erstellen,
-     * denn damit wird aus unser wahnsinnig komplexen Story übersichtlicher Code.
+     * The last scene is created exactly the same
+     * no we have a complex story, but easy to read code...
      */
     createSceneFour(story, player);
 
