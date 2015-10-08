@@ -134,7 +134,7 @@ createStory = function (userId) {
      */
     var helpingHand = sceneTwo.addText(`
         Finally I managed to raise my head and I saw Aiden. Black
-        Hair, a somewhat broad nose and a cheeky grin.
+        hair, a somewhat broad nose and a cheeky grin.
         His first words to me were something about that he did not had seen me coming...
         He gave me the contempt look of a sober drunkard that felt the superiority
         that comes with not laying wasted on the ground. He was about to say something,
